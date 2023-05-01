@@ -53,17 +53,9 @@
 
 <% @the_photo.comments.each do |a_comment|%>
   <tr>
-    <td>
-      <%=a_comment.commenter.username%>
-    </td>
-
-    <td>
-      <%=a_comment.body%>
-    </td>
-
-    <td>
-       <%=a_comment.created_at%>
-    </td>
+    <td> <%=a_comment.commenter.username%> </td>
+    <td> <%=a_comment.body%></td>
+    <td><%=a_comment.created_at%></td>
   <% end %>
   </tr>
   

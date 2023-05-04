@@ -12,7 +12,11 @@ class PhotosController<ApplicationController
     url_id = params.fetch("path_id")
     matching_photos = Photo.where({:id => url_id})
     @the_photo = matching_photos.first
-
+  
+    puts "url_id: #{url_id}"
+    puts "matching_photos: #{matching_photos.inspect}"
+    puts "@the_photo: #{@the_photo.inspect}"
+  
     render ({:template => "photos_templates/show.html.erb"})
   end
 
@@ -23,10 +27,11 @@ class PhotosController<ApplicationController
 
     the_photo.destroy
 
-    render ({:template => "photos_templates/bye.html.erb"})
+    redirect_to ("/photos")
   
-    
-    def create
+  end
+  
+  def create
       input_image = params.fetch("query_image")
       input_caption = params.fetch("query_caption")
       input_owner_id = params.fetch("query_owner_id")
@@ -39,5 +44,33 @@ class PhotosController<ApplicationController
   
       redirect_to ("/photos/"+a_new_photo.id.to_s)
     end
+    def update
+      the_id = params.fetch("modify_id")
+      matching_photos = Photo.where({:id => the_id})
+      the_photo = matching_photos.first
+      
+      input_image = params.fetch("query_image")
+      input_caption = params.fetch("query_caption")
+     
 
+      the_photo.image = input_image
+      the_photo.caption = input_caption
+      
+      the_photo.save
+      redirect_to ("/photos/"+the_photo.id.to_s)
+    end
+  
+    def create_comment
+      input_caption = params.fetch("input_body")
+      input_owner_id = params.fetch("input_author_id")
+      input_body = params.fetch("input_body")
+     
+      a_new_comment = Comment.new
+      a_new_comment.author_id = input_owner_id
+      a_new_comment.body = input_caption
+     
+      a_new_comment.save
+  
+      redirect_to ("/photos/"+a_new_comment.id.to_s)
+    end
 end
